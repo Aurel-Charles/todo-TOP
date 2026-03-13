@@ -6,7 +6,12 @@ export function createTodo(title, description, dueDate, priority, note, checkLis
         dueDate,
         priority,
         note,
-        checkList
+        checkList,
+        isDone: false
     }
-    return todo
+
+    const toggleDone = function () {
+        todo.isDone = !todo.isDone
+    }
+    return {todo, toggleDone}
 }

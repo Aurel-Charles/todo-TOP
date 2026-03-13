@@ -12,6 +12,10 @@ export function createProject(name) {
         return project.list
     }
 
-    
-    return {name, addTodo, getList}
+    const removeTodo = function (todo) {
+        const newList = project.list.filter(item => item.title !== todo.title);
+        project.list = newList
+    }
+
+    return {name, addTodo, getList, removeTodo}
 }
