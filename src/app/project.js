@@ -1,6 +1,7 @@
-export function createProject(name) {
+export function createProject(name, id = crypto.randomUUID()) {
     const project = {
         name,
+        id,
         list: []
     }
 
@@ -13,9 +14,13 @@ export function createProject(name) {
     }
 
     const removeTodo = function (todo) {
-        const newList = project.list.filter(item => item.title !== todo.title);
+        const newList = project.list.filter(item => item.id !== todo.id);
         project.list = newList
     }
 
-    return {name, addTodo, getList, removeTodo}
+    const getId = function () {
+        return project.id
+    }
+
+    return {name, addTodo, getList, removeTodo, getId}
 }

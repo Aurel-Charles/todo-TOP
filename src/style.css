@@ -1,12 +1,381 @@
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+  
+  /* 2. Remove default margin */
+  *:not(dialog) {
+    margin: 0;
+  }
+  
+  /* 3. Enable keyword animations */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      interpolate-size: allow-keywords;
+    }
+  }
+  
+  body {
+    /* 4. Add accessible line-height */
+    line-height: 1.5;
+    /* 5. Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* 6. Improve media defaults */
+  img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+  }
+  
+  /* 7. Inherit fonts for form controls */
+  input, button, textarea, select {
+    font: inherit;
+  }
+  
+  /* 8. Avoid text overflows */
+  p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+  }
+  
+  /* 9. Improve line wrapping */
+  p {
+    text-wrap: pretty;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+  
+  /*
+    10. Create a root stacking context
+  */
+  #root, #__next {
+    isolation: isolate;
+  }
+
+/* CUSTOM CSS */
+
+:root.light {
+    --color-base-bg: #1d1d1d;
+    --color-second-bg: rgb(40, 45, 67);
+    --color-third-bg: rgb(224, 143, 143);
+    --color-accent-bg: #84cee4;
+
+    --color-base-text: rgb(0, 0, 0);
+    --color-second-text: rgb(255, 255, 255);
+    --color-third-text: rgb(18, 18, 18);
+
+    --color-btn-bg: rgb(220, 220, 220);
+    --color-btn-bg-second: rgb(40, 45, 67);
+    
+    --border-color-base: 1px solid rgb(216, 216, 216);
+    --border-color-second: 1px solid rgb(213, 55, 55);
+    --border-color-base-M: 3px solid rgb(216, 216, 216);
+
+    --btn-color-nav: 1px solid rgb(255, 255, 255);
+
+    --color-nav-project-base-bg: rgb(58, 62, 80) ;
+
+    --color-todo-bg: rgb(54, 57, 69);
+
+    --btn-box-shadow-nav: 0 0 8px orange;
+
+    --color-hover-close-text: rgba(255, 0, 93, 0.719);
+
+    --circle-done: rgb(0, 181, 0);
+    --box-shadow-circle-done: rgb(38, 255, 0);
+    --circle-pending: orange;
+    --box-shadow-circle-pending: rgb(255, 191, 0);
+}
+:root.dark {
+    --color-base-bg: rgb(224, 143, 143);
+    --color-second-bg: rgb(138, 218, 127);
+    --color-third-bg: rgb(240, 240, 240);
+
+    --color-base-text: rgb(0, 0, 0);
+    --color-second-text: rgb(18, 18, 18);
+    --color-third-text: rgb(18, 18, 18);
+
+    --color-btn-bg: rgb(36, 36, 36);
+
+    --color-box-shadow-btn: 
+}
+  
+
+
 body{
-    background-color: pink;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height: 100vh;
 }
 
+  
+  
+
+button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-header >  button{
+    background-color: var(--color-third-bg);
+}
+
+
+
+
+
+/* Navigation */
 nav{
-    border: solid 1px black;
+    background-color: var(--color-second-bg);
+    color: var(--color-second-text);
+    grid-column: 1 / 2;
 }
 
-main{
-    color: white;
-    background-color: black;
+.nav-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
 }
+
+.nav-header > h1 {
+    text-transform: uppercase;
+}
+
+.library{ 
+    background-color: var(--color-second-bg);
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.library > button {
+    background-color: var(--color-btn-bg-second);
+    color: var(--color-second-text);
+}
+
+.nav-library-header{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 1rem 0;
+    border-bottom: var(--border-color-base-M);
+}
+.nav-library-header > button ,.nav-header > button{
+    background-color: var(--btn-color-nav);
+    color: var(--color-second-text);
+    border: none;
+}
+
+.library-name{
+    margin-right: auto;
+}
+
+.nav-allproject-div{
+    display: flex;
+    flex-direction: column;
+    border-left: var(--border-color-base);
+    margin: 0 1rem 0 1rem;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+.nav-project-div{
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    margin: 0 1rem 0 1rem;
+    background: var(--color-nav-project-base-bg);
+    border-radius: 10px;
+}
+.nav-project-div:hover{
+    background-color: var(--color-accent-bg);
+}
+.nav-project-div > p{
+    place-self: end;
+    display: block;
+    align-self: center;
+}
+.nav-project-div > button{
+    place-self: start;
+    background-color: var(--border-color-second);
+    color: var(--color-second-text);
+    border: none;
+}
+.nav-project-div > button:hover{
+    color: var(--color-hover-close-text);
+    animation: rotate-180 0.6s ease-in-out both;
+}
+.nav-project-div > .project-name {
+    display: inline-block;
+    justify-self: stretch;
+    text-align: end;
+}
+.nav-library-footer{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.nav-library-footer > .btn-add{
+    background-color: var(--border-color-second);
+    color: var(--color-second-text);
+    border-color: var(--btn-color-nav);
+    box-shadow: var(--btn-box-shadow-nav) ;
+    border-radius: 15px;
+}
+
+.modale-add-prject{
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 0 1rem 0;
+    border: red 1px solid;
+}
+/* Main */
+main{
+    background-color: var(--color-base-bg);
+    color: var(--color-second-text);
+    grid-column: 2 / 5;
+    display: flex;
+    flex-direction: column;
+}
+
+/* main with project */
+.main-header{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 1rem 1rem;
+}
+
+.main-title.project-name{
+    grid-column: 2 / 3;
+    place-self: center;
+    text-transform: uppercase;
+}
+
+.main-header > .btn-add-task {
+    place-self: end;
+    background-color: var(--color-base-bg);
+    color: var(--color-second-text);
+}
+
+
+
+/* todos */
+.todo{
+    background-color: var(--color-todo-bg);
+    padding: 1rem;
+    margin: 0.5rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 5fr 1fr;
+    border-radius: 1rem;
+}
+
+.todo > * button{
+    background-color: var(--color-todo-bg);
+    color: var(--color-second-text);
+}
+/* Todo header */
+.todo-header{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr ;
+}
+
+
+.todo-utilities{
+    margin-right: auto;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.todo-title, .isDone{
+    place-self: center;
+    text-transform: uppercase;
+}
+
+
+.material-symbols-outlined.circle {
+    font-variation-settings: 'FILL' 1;
+    color: var(--circle-pending);
+    text-shadow: 0px 0px 14px var(--box-shadow-circle-pending);
+    margin: 1rem;
+}
+
+.material-symbols-outlined.circle-done {
+    font-variation-settings: 'FILL' 1;
+    color: var(--circle-done);
+    text-shadow: 0px 0px 14px var(--box-shadow-circle-done);
+}
+
+.isDone{
+    display: flex;
+    gap: 1rem;
+}
+/* todo Main */
+
+.todo-main{
+    grid-area: 2 / 1 / 3 / 3;
+    display: none;
+} 
+
+.todo-expand{
+    display: block;
+}
+
+.item-checked{
+    text-decoration: line-through;
+}
+
+
+/* todo footer */
+.todo-footer{
+    display: flex;
+    justify-content: end;
+    gap: 0.5rem;
+}
+
+
+.modale {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--color-third-bg);
+    animation: slide-in 0.4s ease-out forwards;
+    padding: 2rem;
+    border-radius: 1rem 0 0 1rem;
+    max-width: 50vw;
+}
+
+@keyframes slide-in {
+    from { transform: translate(100%, -50%); }
+    to   { transform: translateY(-50%); }
+}
+
+@keyframes slide-out {
+    from { transform: translateY(-50%); }
+    to   { transform: translate(100%, -50%); }
+}
+
+.modale-closing {
+    animation: slide-out 0.3s ease-in forwards;
+}
+
+
+
+  @keyframes rotate-180 {
+    0% {
+      -webkit-transform: rotate(0);
+              transform: rotate(0);
+    }
+    100% {
+      -webkit-transform: rotate(180deg);
+              transform: rotate(180deg);
+    }
+  }
+  
+

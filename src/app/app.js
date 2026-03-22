@@ -1,38 +1,64 @@
+import { createStore } from "./store.js"
 import { createLibrary } from "./library.js"
 import { createProject } from "./project.js"
 import { createTodo } from "./todo.js"
+import { saveLocalStorage } from "../utilities/localStorage.js"
 
 
-function createProjectToLibrary(library, projectName) {
+
+
+export function createLibraryToStore(store, libraryName) {
+    const newLibrary = createLibrary(libraryName)
+    store.addLibrary(newLibrary)
+    saveLocalStorage(store)
+}
+
+export function createProjectToLibrary(library, projectName) {
     const newProject = createProject(projectName)
     library.addProject(newProject)
+    saveLocalStorage(store)
 }
 
-function createTodoToProject( project, title, description, dueDate, priority, note, checklist) {
+export function createTodoToProject( project, title, description, dueDate, priority, note, checklist) {
     const todo = createTodo(title, description, dueDate, priority, note, checklist)
     project.addTodo(todo)
+    saveLocalStorage(store)
+}
+
+export function removeLibraryFromStore(store, library) {
+    store.removeLibrary(library)
+    saveLocalStorage(store)
+}
+
+export function removeProjectFromLibrary(library, project) {
+    library.removeProject(project)
+    saveLocalStorage(store)
+}
+
+export function removeToDoFromProject(project, todo) {
+    project.removeTodo(todo)
+    saveLocalStorage(store)
 }
 
 
-
-const myLibrary = createLibrary("Librairie")
-const myFamilly = createLibrary("Famille")
+const store = createStore("Store")
 
 
-
-createProjectToLibrary(myLibrary,"Alien")
-createProjectToLibrary(myLibrary,"Zombie")
-
-createProjectToLibrary(myFamilly, "aurel")
-createProjectToLibrary(myFamilly, "alex")
-createProjectToLibrary(myFamilly, "caro")
-
-createTodoToProject(myLibrary.getList()[0], "aurel")
-
-createTodoToProject(myFamilly.getList()[0], "todo1Aurel","aurezl descripitotio", "le 1 avril", "high", "pas de note", false )
-createTodoToProject(myFamilly.getList()[0], "todo2Aurel")
-createTodoToProject(myFamilly.getList()[1], "todo1Alex")
-createTodoToProject(myFamilly.getList()[2], "todo1Caro")
+// createLibraryToStore(store, "My Lib")
+// createLibraryToStore(store, "Familly")
 
 
-export { myLibrary , myFamilly}
+// createProjectToLibrary(store.getList()[0], "Photobooth")
+// createProjectToLibrary(store.getList()[0], "Fusee")
+
+// createTodoToProject(store.getList()[0].getList()[0], "Task", "description blablablablba")
+// createTodoToProject(store.getList()[0].getList()[0], "Task02", "description blablablablba")
+
+
+
+export {store}
+
+
+
+
+

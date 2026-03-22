@@ -1,18 +1,26 @@
+import { renderNav } from "./render/renderSidebar.js";
+import { store, createLibraryToStore, createProjectToLibrary, createTodoToProject } from "./app/app.js";
 import "./style.css";
-
-import { myFamilly, myLibrary } from "./app/app.js";
-import { renderNavLibrary, renderNavProjectByLibrary } from "./render/renderSidebar.js";
-
-
-console.log(myLibrary.getList());
-console.log(myLibrary.getList()[0].getList());
-
-
-renderNavLibrary(myLibrary)
-renderNavLibrary(myFamilly)
+import { loadLocalStorage, saveLocalStorage } from "./utilities/localStorage.js";
 
 
 
+if (!localStorage.getItem('defaultStore')) {
+    createLibraryToStore(store, "My Lib")
+    createLibraryToStore(store, "Familly")
+
+
+    createProjectToLibrary(store.getList()[0], "Photobooth")
+    createProjectToLibrary(store.getList()[0], "Fusee")
+
+    createTodoToProject(store.getList()[0].getList()[0], "Task", "description blablablablba")
+    createTodoToProject(store.getList()[0].getList()[0], "Task02", "description blablablablba")
+
+}else{
+    loadLocalStorage(store)
+}
+
+renderNav(store)
 
 
 

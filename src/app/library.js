@@ -1,6 +1,7 @@
-export function createLibrary(name) {
+export function createLibrary(name, id = crypto.randomUUID()) {
     const library = {
         name,
+        id,
         list: []
     }
 
@@ -13,9 +14,13 @@ export function createLibrary(name) {
     }
 
     const removeProject = function (project) {
-        const newList = library.list.filter(item => item.name !== project.name);
+        const newList = library.list.filter(item => item.getId() !== project.getId());
         library.list = newList
     }
 
-    return {name, addProject, getList, removeProject}
+    const getId = function () {
+        return library.id
+    }
+
+    return {name, addProject, getList, removeProject, getId}
 }
