@@ -2,6 +2,7 @@
 import { createLibraryToStore, createProjectToLibrary , removeLibraryFromStore, removeProjectFromLibrary, store} from "../app/app.js";
 import { addBtnNav, removeBtn } from "../utilities/buttons.js";
 import { makeIconAdd, makeIconDelete, makeIconDeleteSmall, makeIconLibrary, makeIconList } from "../utilities/icons.js";
+import { saveLocalStorage } from "../utilities/localStorage.js";
 import { renderDashboard } from "./renderDashboard.js";
 import { renderMainProject } from "./renderMain.js";
 
@@ -33,6 +34,9 @@ export function renderNavProjectByLibrary(library, libraryDiv) {
             libraryDiv.removeChild(projectDiv)
             removeProjectFromLibrary(library, project)
             renderNav(store)
+            saveLocalStorage(store)
+            renderDashboard(store)
+
         })
 
         projectDiv.append(byProjectDiv)
@@ -73,6 +77,8 @@ export function renderNavLibrary(library) {
     removeBtn(libraryHeader, iconDelete, ()=>{
         navDiv.removeChild(libraryDiv)
         removeLibraryFromStore(store, library)
+        saveLocalStorage(store)
+        renderDashboard(store)
     })
     renderNavProjectByLibrary(library, libraryDiv)
 
