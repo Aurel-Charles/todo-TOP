@@ -52,11 +52,17 @@ export function renderMainProject(activeProject) {
 
 
         emptyDiv.append(element, icon)
-        mainDiv.append(emptyDiv)
+        const mainBody = document.createElement('div')
+        mainBody.classList.add('project-body')
+        mainBody.append(emptyDiv)
+        mainDiv.append(mainBody)
     }
 
     else{
-        renderTodoList(activeProject, mainDiv, ()=> renderMainProject(activeProject))
+        const mainBody = document.createElement('div')
+        mainBody.classList.add('project-body')
+        mainDiv.append(mainBody)
+        renderTodoList(activeProject, mainBody, ()=> renderMainProject(activeProject))
     }
 }
 

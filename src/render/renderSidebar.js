@@ -113,7 +113,7 @@ export function renderNav(store){
       navTitleDiv.appendChild(div);
     }
     
-    navTitle.addEventListener('click', ()=> {
+    navTitleDiv.addEventListener('click', ()=> {
         renderDashboard(store)
     })
 
