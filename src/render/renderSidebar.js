@@ -68,7 +68,7 @@ export function renderNavLibrary(library) {
 
     const iconAdd = makeIconAdd()
     const iconList = makeIconList()
-    addBtnNav(libraryFooter, iconAdd, iconList, (nom) => { 
+    addBtnNav(libraryFooter, iconAdd, iconList, "project" , (nom) => { 
         createProjectToLibrary(library, nom)
         renderNav(store)
      } )
@@ -125,7 +125,7 @@ export function renderNav(store){
 
     const iconLibrary = makeIconLibrary()
     const iconAdd = makeIconAdd()
-    addBtnNav(navHeader,iconAdd, iconLibrary, (nom) => { 
+    addBtnNav(navHeader,iconAdd, iconLibrary,"library", (nom) => { 
         createLibraryToStore(store, nom)
         renderNav(store)
      })

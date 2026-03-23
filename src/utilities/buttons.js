@@ -1,6 +1,6 @@
 import { makeIconAdd, makeIconDeleteSmall, makeIconValidate } from "./icons.js"
 
-export function addBtnNav(div, icon1,icon2, callback ) {
+export function addBtnNav(div, icon1,icon2, itemToAdd , callback ) {
     const btn = document.createElement('button')
 
 
@@ -18,7 +18,8 @@ export function addBtnNav(div, icon1,icon2, callback ) {
         modaleAddProject.classList.add("modale-add-project")
 
         const inputLabel = document.createElement('label')
-        inputLabel.textContent = "New Project Name"
+        inputLabel.textContent = itemToAdd === "library" ? "New Library Name" : "New Project Name"
+
         inputLabel.setAttribute("for", 'add-input')
         const input = document.createElement('input')
         input.setAttribute("name", 'add-input')
