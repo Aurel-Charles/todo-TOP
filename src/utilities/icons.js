@@ -65,6 +65,11 @@ function makeIconValidate() {
     return newValidate
 }
 
+function makeIconCoffee() {
+    const newCoffee = makeIcon("coffee_maker", googleClass)
+    return newCoffee
+}
+
 
 export { 
     makeIconCircle, 
@@ -78,4 +83,5 @@ export {
     makeIconList,
     makeIconCreate,
     makeIconValidate,
+    makeIconCoffee,
 }

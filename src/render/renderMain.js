@@ -21,7 +21,7 @@ export function renderMainProject(activeProject) {
 
     const nameProject = document.createElement('h2')
     nameProject.textContent = activeProject.name
-    nameProject.classList.add('main-title', 'project-name')
+    nameProject.classList.add('main-title')
     mainHeader.appendChild(nameProject)
 
     addBtnModale(mainHeader, `Task`, () =>{

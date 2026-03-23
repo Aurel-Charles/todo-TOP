@@ -2,6 +2,7 @@ import { renderNav } from "./render/renderSidebar.js";
 import { store, createLibraryToStore, createProjectToLibrary, createTodoToProject } from "./app/app.js";
 import "./style.css";
 import { loadLocalStorage, saveLocalStorage } from "./utilities/localStorage.js";
+import { renderDashboard } from "./render/renderDashboard.js";
 
 
 
@@ -21,6 +22,5 @@ if (!localStorage.getItem('defaultStore')) {
 }
 
 renderNav(store)
-
-
+renderDashboard(store)
 

@@ -1,4 +1,4 @@
-export function createTodo(title, description, dueDate, priority, note, checklist = {}, id = crypto.randomUUID() ) {
+export function createTodo(title, description, dueDate, priority = "low", note, checklist = {}, id = crypto.randomUUID() ) {
 
     const todo = {
         title,

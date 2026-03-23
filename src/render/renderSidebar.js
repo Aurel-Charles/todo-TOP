@@ -2,6 +2,7 @@
 import { createLibraryToStore, createProjectToLibrary , removeLibraryFromStore, removeProjectFromLibrary, store} from "../app/app.js";
 import { addBtnNav, removeBtn } from "../utilities/buttons.js";
 import { makeIconAdd, makeIconDelete, makeIconDeleteSmall, makeIconLibrary, makeIconList } from "../utilities/icons.js";
+import { renderDashboard } from "./renderDashboard.js";
 import { renderMainProject } from "./renderMain.js";
 
 export let activeProject = null
@@ -21,7 +22,6 @@ export function renderNavProjectByLibrary(library, libraryDiv) {
         nameProject.classList.add('project-name')
         nameProject.addEventListener('click', ()=>{
             activeProject = project
-            console.log("Active Project is: " + activeProject.name);
             renderMainProject(activeProject)
         })
 
@@ -89,9 +89,33 @@ export function renderNav(store){
     const navHeader = document.createElement('div')
     navHeader.classList.add('nav-header')
 
+    const navTitleDiv = document.createElement('div')
     const navTitle = document.createElement('h1')
     navTitle.textContent = "Mindspace"
-    navHeader.append(navTitle)
+
+    navTitleDiv.append(navTitle)
+    navHeader.append(navTitleDiv)
+
+    const totalElements = 150; // Nombre de couches
+    
+    for (let i = 0; i < totalElements; i++) {
+      const div = document.createElement('div');
+      div.className = 'word';
+      div.innerText = navTitle.textContent;
+      
+      // Le "secret" : chaque élément a un léger retard par rapport au précédent
+      // Cela crée l'effet de traînée/spirale
+      div.style.animationDelay = `${i * 0.05}s`;
+      
+      // Optionnel : varier légèrement la couleur pour un effet arc-en-ciel
+      div.style.color = `hsl(${i * 5}, 100%, 70%)`;
+      
+      navTitleDiv.appendChild(div);
+    }
+    
+    navTitle.addEventListener('click', ()=> {
+        renderDashboard(store)
+    })
 
     const iconLibrary = makeIconLibrary()
     const iconAdd = makeIconAdd()

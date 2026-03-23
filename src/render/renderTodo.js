@@ -82,7 +82,7 @@ function renderTodoFields(todo, onRefresh) {
             keyDiv.classList.add(key)
             
             const elementKey = document.createElement('p')
-            elementKey.textContent = key + ":"
+            elementKey.textContent = "Date"
             elementKey.textContent = elementKey.textContent.toUpperCase()
             elementKey.classList.add('todo-key')
             keyDiv.appendChild(elementKey)
@@ -114,17 +114,33 @@ function renderTodoFields(todo, onRefresh) {
             const optionLow = document.createElement('option')
             optionLow.setAttribute('value', "low")
             optionLow.textContent = "LOW"
-
+            if (value == "low") {
+                optionLow.setAttribute("selected", "")
+            }
+            
             const optionMid = document.createElement('option')
             optionMid.setAttribute('value', "mid")
             optionMid.textContent = "MID"
-
+            if (value == "mid") {
+                optionMid.setAttribute("selected", "")
+            }
+            
             const optionHigh = document.createElement('option')
             optionHigh.setAttribute('value', "high")
             optionHigh.textContent = "HIGH"
+            if (value == "high") {
+                optionHigh.setAttribute("selected", "")
+            }
+            
+            // change
+            selectPriority.addEventListener('change', (e)=> {
+                todo.edit(key, e.target.value)
+                saveLocalStorage(store)
+
+            })
 
             // append
-            selectPriority.append(optionLow)
+            selectPriority.append(optionLow, optionMid, optionHigh)
             keyDiv.append(labelKey, selectPriority)
 
             mainFields.push(keyDiv)
@@ -172,7 +188,7 @@ function renderTodoFields(todo, onRefresh) {
             keyDiv.append(listDiv)
             mainFields.push(keyDiv)
         }
-        else{
+        else if (key){
             const keyDiv = document.createElement('div')
             keyDiv.classList.add(key)
             

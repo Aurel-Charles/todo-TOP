@@ -55,7 +55,7 @@ export function form(activeProject, todo = null) {
             input.setAttribute('id', `form-input-${key}`)
             const labelInput = document.createElement('label')
             labelInput.setAttribute('for', `form-input-${key}`)
-            labelInput.textContent = key
+            labelInput.textContent = 'Date'
             
             inputs[key] = input
             if (!isNew && value) { input.value = value }
@@ -68,6 +68,45 @@ export function form(activeProject, todo = null) {
             let checkListFormDiv
             ({checkListFormDiv, getFormChecklist } = renderChecklistForm(activeProject, todo))
             formElement.append(checkListFormDiv)
+        }
+        
+        else if (key == "priority"){
+            
+            const labelPriority = document.createElement('label')
+            labelPriority.setAttribute('for', `select-${key}`)
+            labelPriority.textContent = key
+            const selectPriority = document.createElement('select')
+            selectPriority.setAttribute('name', `select-${key}`)
+            selectPriority.setAttribute('id', `select-${key}`)
+
+            // choice
+            const optionLow = document.createElement('option')
+            optionLow.setAttribute('value', "low")
+            optionLow.textContent = "LOW"
+            if (value == "low") {
+                optionLow.setAttribute("selected", "")
+            }
+            
+            const optionMid = document.createElement('option')
+            optionMid.setAttribute('value', "mid")
+            optionMid.textContent = "MID"
+            if (value == "mid") {
+                optionMid.setAttribute("selected", "")
+            }
+            
+            const optionHigh = document.createElement('option')
+            optionHigh.setAttribute('value', "high")
+            optionHigh.textContent = "HIGH"
+            if (value == "high") {
+                optionHigh.setAttribute("selected", "")
+            }
+
+            selectPriority.append(optionLow, optionMid, optionHigh)
+            
+
+            inputs[key] =  selectPriority
+
+            formElement.append(labelPriority, selectPriority)
         }
         
         else{
