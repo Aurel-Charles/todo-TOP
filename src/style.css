@@ -9,10 +9,6 @@
    *, *::before, *::after { box-sizing: border-box; }
    *:not(dialog) { margin: 0; }
    
-   @media (prefers-reduced-motion: no-preference) {
-     html { interpolate-size: allow-keywords; }
-   }
-   
    body {
      line-height: 1.5;
      -webkit-font-smoothing: antialiased;
@@ -22,48 +18,41 @@
    img, picture, video, canvas, svg { display: block; max-width: 100%; }
    input, button, textarea, select { font: inherit; }
    p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
-   p { text-wrap: pretty; }
-   h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
-   #root, #__next { isolation: isolate; }
    
    /* ================================
-      DESIGN 
+      TOKENS
       ================================ */
    :root {
-     --bg-base:           #0d0f1a;
-     --bg-nav:            #131629;
-     --bg-card:           #1a1d2e;
-     --bg-glass:          rgba(255, 255, 255, 0.04);
-     --bg-glass-hover:    rgba(255, 255, 255, 0.08);
+     --bg:           #ffffff;
+     --bg-nav:       #f7f7f7;
+     --bg-card:      #ffffff;
+     --bg-hover:     #f0f0f0;
    
-     --accent:            #6c63ff;
-     --accent-light:      rgba(108, 99, 255, 0.15);
-     --accent-glow:       0 0 20px rgba(108, 99, 255, 0.3);
+     --accent:       #1a1a1a;
+     --accent-light: rgba(0,0,0,0.06);
    
-     --color-high:        #f97316;
-     --color-high-bg:     rgba(249, 115, 22, 0.12);
-     --color-danger:      #ef4444;
-     --color-danger-bg:   rgba(239, 68, 68, 0.12);
-     --color-success:     #22c55e;
-     --color-upcoming:    #38bdf8;
-     --color-upcoming-bg: rgba(56, 189, 248, 0.12);
+     --text-primary:   #1a1a1a;
+     --text-secondary: #666666;
+     --text-muted:     #999999;
    
-     --text-primary:      #f0f1f6;
-     --text-secondary:    #8b8fa8;
+     --border:       1px solid #e0e0e0;
+     --border-strong:1px solid #1a1a1a;
    
-     --border:            1px solid rgba(255, 255, 255, 0.07);
-     --border-strong:     1px solid rgba(255, 255, 255, 0.15);
+     --radius-sm: 4px;
+     --radius-md: 8px;
+     --radius-lg: 12px;
+     --transition: 0.15s ease;
    
-     --radius-sm:   0.4rem;
-     --radius-md:   0.75rem;
-     --radius-lg:   1.25rem;
-     --transition:  0.2s ease;
-   
-     --circle-done:               #22c55e;
-     --box-shadow-circle-done:    rgb(38, 255, 0);
-     --circle-pending:            orange;
-     --box-shadow-circle-pending: rgb(255, 191, 0);
-     --color-hover-close-text:    rgba(255, 0, 93, 0.719);
+     --circle-done:    #22c55eb3;
+     --circle-pending: #f97416af;
+     --color-high:     #ef4444;
+     --color-high-bg:  #fff5f5;
+     --color-danger:   #ef4444;
+     --color-danger-bg:#fff5f5;
+     --color-success:  #22c55e;
+     --color-upcoming: #3b82f6;
+     --color-upcoming-bg: #eff6ff;
+     --color-hover-close-text: #ef4444;
    }
    
    /* ================================
@@ -74,7 +63,7 @@
      grid-template-columns: 260px 1fr;
      height: 100vh;
      overflow: hidden;
-     background-color: var(--bg-base);
+     background: var(--bg);
      color: var(--text-primary);
    }
    
@@ -89,7 +78,7 @@
       NAV
       ================================ */
    nav {
-     background-color: var(--bg-nav);
+     background: var(--bg-nav);
      border-right: var(--border);
      display: flex;
      flex-direction: column;
@@ -103,33 +92,60 @@
      align-items: center;
      padding: 1.5rem 1rem 1rem;
      border-bottom: var(--border);
-     gap: 0.5rem;
+     gap: 0.75rem;
+   }
+   
+   .nav-header > div {
+     position: relative;
+     width: fit-content;
    }
    
    .nav-header > div > h1 {
-     font-size: 2rem;
+     font-size: 1.5rem;
      font-weight: 700;
-     letter-spacing: 0.15em;
+     letter-spacing: 0.1em;
      text-transform: uppercase;
-     background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
-     -webkit-background-clip: text;
-     -webkit-text-fill-color: transparent;
-     background-clip: text;
+     color: var(--text-primary);
      cursor: pointer;
    }
    
+   .word {
+     position: absolute;
+     top: 0; left: 0;
+     font-size: 1.5rem;
+     font-family: 'Inter', sans-serif;
+     font-weight: 700;
+     letter-spacing: 0.1em;
+     text-transform: uppercase;
+     white-space: nowrap;
+     animation:
+       spin 9s linear infinite alternate,
+       fade-in 8s ease-in-out infinite alternate;
+   }
+   
+   @keyframes spin {
+     0%   { transform: rotate(-10deg); }
+     100% { transform: rotate(10deg); }
+   }
+   
+   @keyframes fade-in {
+     from { opacity: 0; }
+     to   { opacity: 0.4; }
+   }
+   
    .nav-header > button {
-     background: var(--bg-glass);
-     color: var(--text-secondary);
+     background: none;
      border: var(--border);
+     color: var(--text-secondary);
      border-radius: var(--radius-sm);
      padding: 0.25rem 0.75rem;
      font-size: 0.8rem;
      transition: all var(--transition);
+     cursor: pointer;
    }
    
    .nav-header > button:hover {
-     background: var(--bg-glass-hover);
+     background: var(--bg-hover);
      color: var(--text-primary);
    }
    
@@ -150,9 +166,9 @@
    .library-name {
      flex: 1;
      font-size: 0.72rem;
-     font-weight: 600;
+     font-weight: 700;
      text-transform: uppercase;
-     letter-spacing: 0.08em;
+     letter-spacing: 0.1em;
      color: var(--text-secondary);
    }
    
@@ -160,7 +176,7 @@
    .nav-header > button {
      background: none;
      border: none;
-     color: var(--text-secondary);
+     color: var(--text-muted);
      cursor: pointer;
      padding: 0.2rem;
      border-radius: var(--radius-sm);
@@ -171,15 +187,15 @@
    
    .nav-library-header > button:hover {
      color: var(--text-primary);
-     background: var(--bg-glass-hover);
+     background: var(--bg-hover);
    }
    
    .nav-allproject-div {
      display: flex;
      flex-direction: column;
-     gap: 0.25rem;
+     gap: 0.15rem;
      padding-left: 0.5rem;
-     border-left: 2px solid rgba(255, 255, 255, 0.06);
+     border-left: 2px solid #e0e0e0;
      margin-left: 0.75rem;
    }
    
@@ -190,25 +206,20 @@
      padding: 0.4rem 0.6rem;
      border-radius: var(--radius-sm);
      cursor: pointer;
-     transition: all var(--transition);
-     border: 1px solid transparent;
+     transition: background var(--transition);
    }
    
-   .nav-project-div:hover {
-     background-color: var(--bg-glass-hover);
-     border-color: rgba(255, 255, 255, 0.08);
-   }
+   .nav-project-div:hover { background: var(--bg-hover); }
    
    .nav-project-div > .project-name {
      font-size: 0.875rem;
      color: var(--text-primary);
-     opacity: 0.85;
    }
    
    .nav-project-div > button {
      background: none;
      border: none;
-     color: var(--text-secondary);
+     color: var(--text-muted);
      cursor: pointer;
      display: flex;
      border-radius: 4px;
@@ -224,9 +235,7 @@
      animation: rotate-180 0.5s ease-in-out both;
    }
    
-   .nav-library-footer {
-     padding: 0.5rem 0.75rem;
-   }
+   .nav-library-footer { padding: 0.5rem 0.75rem; }
    
    .nav-library-footer > .btn-add {
      background: none;
@@ -243,7 +252,7 @@
    }
    
    .nav-library-footer > .btn-add:hover {
-     background: var(--bg-glass-hover);
+     background: var(--bg-hover);
      color: var(--text-primary);
      border-color: var(--accent);
    }
@@ -251,31 +260,30 @@
    .modale-add-project {
      align-self: center;
      display: grid;
-    grid-template-columns: 1fr 1fr;
+     grid-template-columns: 1fr 1fr;
      align-items: center;
      gap: 0.75rem;
      padding: 1rem;
-     background: var(--bg-glass);
-     border: var(--border);
+     background: var(--bg);
+     border: var(--border-strong);
      border-radius: var(--radius-md);
      margin: 0.5rem;
    }
-    .modale-add-project > label,
-    .modale-add-project > input {
-    grid-column: 1 / 3;
-    }
-
-    .modale-add-project > label { place-self: center; }
+   
+   .modale-add-project > label,
+   .modale-add-project > input { grid-column: 1 / 3; }
+   .modale-add-project > label { place-self: center; }
+   
    /* ================================
       MAIN
       ================================ */
    main {
-     background-color: var(--bg-base);
+     background: var(--bg);
      color: var(--text-primary);
      display: flex;
      flex-direction: column;
      overflow: hidden;
-     min-height: 0;   /* indispensable pour les enfants de grid */
+     min-height: 0;
    }
    
    .main-header {
@@ -286,47 +294,54 @@
      border-bottom: var(--border);
      position: sticky;
      top: 0;
-     background: var(--bg-base);
+     background: var(--bg);
      z-index: 10;
    }
    
    .main-title {
      grid-column: 2;
      justify-self: center;
-     font-size: 3rem;
-     font-weight: 600;
-     letter-spacing: 0.15em;
+     font-size: 1.5rem;
+     font-weight: 700;
+     letter-spacing: 0.12em;
      text-transform: uppercase;
-     color: var(--text-secondary);
-    --color-primary:     #6c63ff;
-    --color-secondary:   #857aff;
-    --color-tertiary:    #9e97ff;
-    --color-quaternary:  #b7b3ff;
-    --color-quinary:     #d0ceff;
-  
-    color: var(--color-primary);
-    text-shadow: 3px 3px 0 var(--color-secondary), 
-                 6px 6px 0 var(--color-tertiary),
-                 9px 9px var(--color-quaternary), 
-                 12px 12px 0 var(--color-quinary);
-  }
+     color: var(--text-primary);
+     animation: shadows 8.2s ease-in infinite;
+   
+     --c1: #aaaaaa;
+     --c2: #bbbbbb;
+     --c3: #cccccc;
+     --c4: #dddddd;
+     text-shadow: 3px 3px 0 var(--c1), 6px 6px 0 var(--c2),
+                  9px 9px 0 var(--c3), 12px 12px 0 var(--c4);
+   }
+   
+   @keyframes shadows {
+     0%   { text-shadow: none; transform: translate(0,0); }
+     40%  { transform: translate(-12px,-12px);
+            text-shadow: 3px 3px 0 var(--c1), 6px 6px 0 var(--c2),
+                         9px 9px 0 var(--c3), 12px 12px 0 var(--c4); }
+     60%  { transform: translate(-12px,-12px);
+            text-shadow: 3px 3px 0 var(--c1), 6px 6px 0 var(--c2),
+                         9px 9px 0 var(--c3), 12px 12px 0 var(--c4); }
+     100% { text-shadow: none; transform: translate(0,0); }
+   }
    
    .main-header > .btn-add-task {
      justify-self: end;
-     background: var(--accent);
+     background: var(--text-primary);
      color: #fff;
      border: none;
-     border-radius: var(--radius-md);
+     border-radius: var(--radius-sm);
      padding: 0.5rem 1rem;
      font-size: 0.875rem;
      font-weight: 500;
      cursor: pointer;
      transition: all var(--transition);
-     box-shadow: var(--accent-glow);
    }
    
    .main-header > .btn-add-task:hover {
-     filter: brightness(1.15);
+     background: #333;
      transform: translateY(-1px);
    }
    
@@ -344,16 +359,16 @@
    }
    
    /* ================================
-      DASHBOARD BLOCKS — base
+      DASHBOARD BLOCKS
       ================================ */
    .stats,
    .high-priority,
    .happening-this-week,
    .all-project,
    .overdues-todo\'s {
-     background-color: var(--bg-card);
-     border: var(--border);
-     border-radius: var(--radius-lg);
+     background: var(--bg-card);
+     border: var(--border-strong);
+     border-radius: var(--radius-md);
      padding: 1.25rem;
      display: flex;
      flex-direction: column;
@@ -366,7 +381,7 @@
    .all-project > h1,
    .overdues-todo\'s > h1 {
      font-size: 0.68rem;
-     font-weight: 600;
+     font-weight: 700;
      text-transform: uppercase;
      letter-spacing: 0.12em;
      color: var(--text-secondary);
@@ -374,140 +389,113 @@
      border-bottom: var(--border);
    }
    
-   /* ================================
-      STATS
-      ================================ */
+   /* STATS */
    .stats {
      grid-column: 1 / -1;
-     flex-direction: row;
+     flex-direction: column;
+     justify-content: space-around;
      align-items: center;
-     background: linear-gradient(135deg, #1a1d2e 0%, #1d1535 100%);
-     border-color: rgba(108, 99, 255, 0.25);
-     border-top: 2px solid var(--accent);
+     background: var(--text-primary);
+     color: #fff;
+     border-color: var(--text-primary);
    }
    
-   .stats > h1 { display: none; }
+   .stats > h1 { display: block; }
    
-   .stats-body {
+   .stats-body > div {
      display: flex;
+     gap: 3rem;
      justify-content: space-around;
      width: 100%;
    }
    
    .stats p {
-     font-size: 2rem;
+     font-size: 1rem;
      font-weight: 700;
-     color: var(--text-primary);
+     color: #fff;
      text-align: center;
    }
    
-   /* ================================
-      HIGH PRIORITY
-      ================================ */
-   /* HIGH PRIORITY — titre à gauche, date à droite */
-.high-priority-body > div {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    gap: 0.1rem 0.75rem;
-    background: var(--color-high-bg);
-    border: 1px solid rgba(249, 115, 22, 0.2);
-    border-radius: var(--radius-md);
-    padding: 0.6rem 0.75rem;
-    transition: background var(--transition);
-  }
-  
-  .high-priority-body > div:hover { background: rgba(249, 115, 22, 0.2); }
-  
-  /* titre */
-  .high-priority-body > div > h4:first-child {
-    grid-column: 1; grid-row: 1;
-    font-size: 0.875rem;
-    font-weight: 600;
-  }
-  
-  /* badge priority */
-  .high-priority-body > div > p {
-    grid-column: 1; grid-row: 2;
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-high);
-    opacity: 0.8;
-  }
-  
-  /* date — colonne droite, centré verticalement */
-  .high-priority-body > div > h4:last-child {
-    grid-column: 2; grid-row: 1 / 3;
-    align-self: center;
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    white-space: nowrap;
-  }
-  
-  
-  /* HAPPENING THIS WEEK — date en badge, titre, description */
-  .happening-this-week-body > div {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 0.1rem 0.75rem;
-    align-items: center;
-    background: var(--color-upcoming-bg);
-    border: 1px solid rgba(56, 189, 248, 0.2);
-    border-radius: var(--radius-md);
-    padding: 0.6rem 0.75rem;
-    transition: background var(--transition);
-  }
-  
-  .happening-this-week-body > div:hover { background: rgba(56, 189, 248, 0.18); }
-  
-  /* date badge — colonne gauche */
-  .upcoming-date-todo {
-    grid-column: 1; grid-row: 1 / 3;
-    align-self: center;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--color-upcoming);
-    background: rgba(56, 189, 248, 0.12);
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    border-radius: var(--radius-sm);
-    padding: 0.3rem 0.5rem;
-    white-space: nowrap;
-  }
-  
-  /* titre */
-  .happening-this-week-body h4 {
-    grid-column: 2; grid-row: 1;
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-  
-  /* description */
-  .description-date-todo {
-    grid-column: 2; grid-row: 2;
-    font-size: 0.72rem;
-    color: var(--text-secondary);
-    opacity: 0.8;
-  }
-   
-   /* ================================
-      ALL PROJECTS
-      ================================ */
-   .all-project { border-top: 2px solid var(--color-success); }
-   .all-project > h1 { color: var(--color-success); }
-   
-   .all-project-body > div {
+   /* HIGH PRIORITY */
+   .high-priority-body > div {
      display: grid;
-     gap: 0.5rem;
+     grid-template-columns: 1fr ;
+     grid-template-rows: auto ;
+     gap: 0.4rem 0.75rem;
+     transition: background var(--transition);
+    }
+    .high-priority-body > div > div {
+       background: var(--color-high-bg);
+       border: 1px solid #fca5a5;
+       border-left: 3px solid var(--color-high);
+       border-radius: var(--radius-sm);
+       padding: 0.6rem 0.75rem;
    }
    
+   .high-priority-body > div > div:hover { background: #fee2e2; }
+   
+   .high-priority-body > div > div > h4:first-child {
+     grid-column: 1; grid-row: 1;
+     font-size: 0.875rem; font-weight: 600;
+   }
+   
+
+   
+   .high-priority-body > div > div > h4:last-child {
+     grid-column: 2; grid-row: 1 / 3;
+     align-self: center;
+     font-size: 0.72rem; font-weight: 400;
+     color: var(--text-secondary); white-space: nowrap;
+   }
+   
+   /* HAPPENING THIS WEEK */
+   .happening-this-week-body > div {
+    display: grid;
+    gap: 0.2rem;
+   }
+   .happening-this-week-body > div > div {
+     display: grid;
+     grid-template-columns: auto 1fr;
+     grid-template-rows: auto auto;
+     gap: 0.rem 0.75rem;
+     align-items: center;
+     background: var(--color-upcoming-bg);
+     border: 1px solid #bfdbfe;
+     border-radius: var(--radius-sm);
+     padding: 0.6rem 0.75rem;
+     transition: background var(--transition);
+   }
+   
+   .happening-this-week-body > div > div:hover { background: #dbeafe; }
+   
+   .upcoming-date-todo {
+     grid-column: 1; grid-row: 1 / 3;
+     align-self: center;
+     font-size: 0.72rem; font-weight: 700;
+     color: var(--color-upcoming);
+     background: #dbeafe;
+     border: 1px solid #93c5fd;
+     border-radius: var(--radius-sm);
+     padding: 0.3rem 0.5rem; white-space: nowrap;
+   }
+   
+   .happening-this-week-body h4 {
+     grid-column: 2; grid-row: 1;
+     font-size: 0.875rem; font-weight: 500;
+   }
+   
+   .description-date-todo {
+     grid-column: 2; grid-row: 2;
+     font-size: 0.72rem; color: var(--text-secondary);
+   }
+   
+   /* ALL PROJECTS */
+   .all-project-body > div { display: grid; gap: 0.5rem; }
+   
    .all-project-body > div > div {
-     background: var(--bg-glass);
+     background: var(--bg);
      border: var(--border);
-     border-radius: var(--radius-md);
+     border-radius: var(--radius-sm);
      padding: 0.6rem 0.75rem;
      cursor: pointer;
      display: flex;
@@ -517,25 +505,20 @@
    }
    
    .all-project-body > div > div:hover {
-     background: var(--bg-glass-hover);
-     border-color: rgba(34, 197, 94, 0.3);
+     background: var(--bg-hover);
+     border-color: var(--accent);
      transform: translateX(3px);
    }
    
    .all-project-body h4 { font-size: 0.875rem; font-weight: 500; }
    .all-project-body p  { font-size: 0.72rem; color: var(--text-secondary); }
    
-   /* ================================
-      OVERDUES
-      ================================ */
-   .overdues-todo\'s { border-top: 2px solid var(--color-danger); }
-   .overdues-todo\'s > h1 { color: var(--color-danger); }
-   
+   /* OVERDUES */
    .overdues-todo\'s-body > div {
      background: var(--color-danger-bg);
-     border: 1px solid rgba(239, 68, 68, 0.2);
+     border: 1px solid #fca5a5;
      border-left: 3px solid var(--color-danger);
-     border-radius: var(--radius-md);
+     border-radius: var(--radius-sm);
      padding: 0.6rem 0.75rem;
      display: flex;
      justify-content: space-between;
@@ -544,7 +527,7 @@
      transition: background var(--transition);
    }
    
-   .overdues-todo\'s-body > div:hover { background: rgba(239, 68, 68, 0.2); }
+   .overdues-todo\'s-body > div:hover { background: #fee2e2; }
    .overdues-todo\'s-body h4 { font-size: 0.875rem; font-weight: 500; }
    
    /* Messages vides */
@@ -552,53 +535,48 @@
    .happening-this-week-body > p,
    .all-project-body > p,
    .overdues-todo\'s-body > p {
-     color: var(--text-secondary);
+     color: var(--text-muted);
      font-style: italic;
      font-size: 0.82rem;
-     opacity: 0.7;
    }
    
    /* ================================
       PROGRESS BAR
       ================================ */
    progress {
-     width: 100%;
-     height: 5px;
-     border-radius: 99px;
-     border: none;
-     background: rgba(255, 255, 255, 0.08);
+     width: 100%; height: 5px;
+     border-radius: 99px; border: none;
+     background: #e5e7eb;
    }
    
-   progress::-webkit-progress-bar {
-     background: rgba(255, 255, 255, 0.08);
-     border-radius: 99px;
-   }
-   
-   progress::-webkit-progress-value {
-     background: linear-gradient(90deg, var(--accent), var(--color-success));
-     border-radius: 99px;
-   }
-   
-   progress::-moz-progress-bar {
-     background: linear-gradient(90deg, var(--accent), var(--color-success));
-   }
+   progress::-webkit-progress-bar { background: #e5e7eb; border-radius: 99px; }
+   progress::-webkit-progress-value { background: var(--text-primary); border-radius: 99px; }
+   progress::-moz-progress-bar { background: var(--text-primary); }
    
    /* ================================
       TODOS
       ================================ */
+   .project-body {
+     display: flex;
+     flex-direction: column;
+     gap: 0.75rem;
+     padding: 1.25rem;
+     overflow-y: auto;
+     flex: 1;
+   }
+   
    .todo {
-     background-color: var(--bg-card);
-     border: var(--border);
+     background: var(--bg-card);
+     border: var(--border-strong);
      padding: 1rem 1.25rem;
-     margin: 0.5rem 1rem;
      display: grid;
      gap: 0.75rem;
      grid-template-columns: 5fr 1fr;
-     border-radius: var(--radius-lg);
-     transition: border-color var(--transition);
+     border-radius: var(--radius-md);
+     transition: box-shadow var(--transition);
    }
    
-   .todo:hover { border-color: rgba(255, 255, 255, 0.15); }
+   .todo:hover { box-shadow: 4px 4px 0 #1a1a1a; }
    
    .todo > * button {
      background: none;
@@ -620,7 +598,7 @@
    
    .todo-title {
      font-size: 0.875rem;
-     font-weight: 600;
+     font-weight: 700;
      letter-spacing: 0.05em;
    }
    
@@ -628,19 +606,25 @@
      display: flex;
      flex-direction: row-reverse;
      align-items: center;
+     justify-content: end;
      gap: 0.25rem;
    }
    
    .isDone {
      display: flex;
      align-items: center;
+    justify-self: start;
+    padding-left: 0.6rem;
      gap: 0.5rem;
+     font-size: 0.75rem;
+     font-weight: 600;
+     text-transform: uppercase;
+     letter-spacing: 0.05em;
    }
    
    .material-symbols-outlined.circle {
      font-variation-settings: 'FILL' 1;
      color: var(--circle-pending);
-     filter: drop-shadow(0 0 6px rgba(255, 165, 0, 0.4));
      margin: 0.5rem;
      cursor: pointer;
      transition: transform var(--transition);
@@ -651,27 +635,285 @@
    .material-symbols-outlined.circle-done {
      font-variation-settings: 'FILL' 1;
      color: var(--circle-done);
-     filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.5));
    }
    
+   /* Checkboxes */
+   .isDone input[type="checkbox"],
+   .checklist-item input[type="checkbox"] {
+     appearance: none;
+     -webkit-appearance: none;
+     width: 1rem; height: 1rem;
+     border: 2px solid #aaa;
+     border-radius: 3px;
+     cursor: pointer;
+     position: relative;
+     flex-shrink: 0;
+     transition: all var(--transition);
+   }
+   
+   .isDone input[type="checkbox"]:checked,
+   .checklist-item input[type="checkbox"]:checked {
+     background: var(--text-primary);
+     border-color: var(--text-primary);
+   }
+   
+   .isDone input[type="checkbox"]:checked::after,
+   .checklist-item input[type="checkbox"]:checked::after {
+     content: '';
+     position: absolute;
+     left: 2px; top: -1px;
+     width: 6px; height: 10px;
+     border: 2px solid white;
+     border-top: none; border-left: none;
+     transform: rotate(45deg);
+   }
+   
+   .isDone input[type="checkbox"]:hover,
+   .checklist-item input[type="checkbox"]:hover { border-color: var(--text-primary); }
+   
+   /* TODO MAIN — expanded */
    .todo-main {
      grid-area: 2 / 1 / 3 / 3;
      display: none;
-     padding-top: 0.5rem;
+     padding-top: 0.75rem;
      border-top: var(--border);
+     grid-template-columns: 1fr 1fr;
+     gap: 0.75rem;
    }
    
-   .todo-expand { display: grid; }
+   .todo-expand { 
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+     }
    
-   .item-checked {
-     text-decoration: line-through;
-     opacity: 0.45;
+   .description, .note { grid-column: 1 / -1; }
+   .dueDate, .priority, .checklist { grid-column: span 1; }
+   
+   .todo-key {
+     font-size: 0.65rem;
+     font-weight: 700;
+     letter-spacing: 0.1em;
+     text-transform: uppercase;
+     color: var(--text-muted);
+     margin-bottom: 0.25rem;
    }
+   
+   .todo-value {
+     font-size: 0.875rem;
+     color: var(--text-secondary);
+     line-height: 1.5;
+   }
+   
+   .priority select {
+     background: var(--bg);
+     border: var(--border-strong);
+     border-radius: var(--radius-sm);
+     color: var(--text-primary);
+     padding: 0.2rem 0.5rem;
+     font-size: 0.75rem;
+     font-weight: 600;
+     cursor: pointer;
+     margin-left: 0.9rem;
+   }
+   
+   .checklist ul {
+     list-style: none; padding: 0;
+     display: flex; flex-direction: column; gap: 0.35rem;
+   }
+   
+   .checklist-item {
+     display: flex; align-items: center;
+     gap: 0.5rem;
+     font-size: 0.825rem;
+     color: var(--text-secondary);
+   }
+   
+   .item-checked { text-decoration: line-through; opacity: 0.45; }
    
    .todo-footer {
      display: flex;
      justify-content: end;
      gap: 0.5rem;
+   }
+   
+   /* ================================
+      MODAL
+      ================================ */
+   .modale {
+     z-index: 100;
+     position: fixed;
+     right: 0; top: 50%;
+     transform: translateY(-50%);
+     background: #fff;
+     border: var(--border-strong);
+     border-right: none;
+     animation: slide-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+     padding: 1.75rem 2rem 2rem;
+     border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+     max-width: 420px;
+     width: 38vw;
+     box-shadow: -8px 0 32px rgba(0,0,0,0.1);
+   }
+   
+   .modale-closing {
+     animation: slide-out 0.25s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+   }
+   
+   .modale form { display: flex; flex-direction: column; gap: 0; }
+   
+   .modale form h2 {
+     font-size: 0.95rem; font-weight: 700;
+     color: var(--text-primary);
+     letter-spacing: 0.05em; text-transform: uppercase;
+     padding-bottom: 1rem; margin-bottom: 1.25rem;
+     border-bottom: var(--border-strong);
+   }
+   
+   .modale form > input {
+     width: 100%;
+     background: transparent;
+     border: none;
+     border-bottom: 1px solid #ccc;
+     padding: 0.6rem 0;
+     color: var(--text-primary);
+     font-size: 0.95rem;
+     outline: none;
+     transition: border-color var(--transition);
+     margin-top: 1.5rem;
+   }
+   
+   .modale form > input:first-of-type { margin-top: 0; }
+   .modale form > input:focus { border-bottom-color: var(--text-primary); }
+   
+   .modale form > input[type="date"] { cursor: pointer; }
+   
+   .modale form > label {
+     font-size: 0.65rem; font-weight: 700;
+     text-transform: uppercase; letter-spacing: 0.1em;
+     color: var(--text-muted);
+     margin-top: 0.3rem;
+   }
+   
+   .modale form > label[for^="select"] {
+     margin-top: 1.5rem; margin-bottom: 0.4rem;
+   }
+   
+   .modale form > select {
+     width: 100%;
+     background: var(--bg);
+     border: var(--border-strong);
+     border-radius: var(--radius-sm);
+     padding: 0.55rem 2rem 0.55rem 0.75rem;
+     color: var(--text-primary);
+     font-size: 0.875rem;
+     cursor: pointer; outline: none;
+     appearance: none;
+     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+     background-repeat: no-repeat;
+     background-position: right 0.75rem center;
+     transition: border-color var(--transition);
+   }
+   
+   .modale form > select:focus { border-color: var(--text-primary); }
+   .modale form > select option { background: #fff; color: var(--text-primary); }
+   
+   /* Checklist dans modal */
+   .todo-checklist.form {
+     display: flex; flex-direction: column; gap: 0.5rem;
+     background: var(--bg-hover);
+     border: var(--border);
+     border-radius: var(--radius-md);
+     padding: 0.875rem; margin-top: 1.5rem;
+   }
+   
+   .todo-checklist.form > p {
+     font-size: 0.65rem; font-weight: 700;
+     text-transform: uppercase; letter-spacing: 0.1em;
+     color: var(--text-secondary);
+   }
+   
+   .todo-checklist.form > ul {
+     list-style: none; padding: 0;
+     display: flex; flex-direction: column; gap: 0.25rem;
+   }
+   
+   .todo-checklist.form > ul > div {
+     display: flex; align-items: center;
+     background: #fff;
+     border-radius: var(--radius-sm);
+     padding: 0.35rem 0.6rem;
+   }
+   
+   .checklist-item {
+     display: flex; align-items: center;
+     justify-content: space-between;
+     width: 100%;
+     font-size: 0.85rem; color: var(--text-primary);
+   }
+   
+   .checklist-item > button {
+     background: none; border: none;
+     color: var(--text-muted); cursor: pointer; padding: 0;
+     display: flex; align-items: center;
+     transition: color var(--transition);
+   }
+   
+   .checklist-item > button:hover { color: var(--color-danger); }
+   
+   .todo-checklist.form > button {
+     align-self: flex-start;
+     background: var(--bg);
+     border: var(--border-strong);
+     border-radius: var(--radius-sm);
+     color: var(--text-primary);
+     padding: 0.3rem 0.7rem;
+     font-size: 0.78rem; font-weight: 600;
+     cursor: pointer; transition: all var(--transition);
+   }
+   
+   .todo-checklist.form > button:hover { background: var(--bg-hover); }
+   
+   .todo-checklist.form > input {
+     background: transparent; border: none;
+     border-bottom: 1px solid #ccc;
+     padding: 0.4rem 0;
+     color: var(--text-primary);
+     font-size: 0.85rem; outline: none; width: 100%;
+     transition: border-color var(--transition);
+   }
+   
+   .todo-checklist.form > input:focus { border-bottom-color: var(--text-primary); }
+   
+   /* Boutons modal */
+   .modale form > button {
+     padding: 0.65rem 1.25rem;
+     border-radius: var(--radius-sm);
+     font-size: 0.875rem; font-weight: 600;
+     cursor: pointer; transition: all var(--transition);
+     width: 100%;
+   }
+   
+   .modale form > button:nth-last-of-type(2) {
+     margin-top: 2rem;
+     background: var(--text-primary);
+     color: #fff; border: none;
+   }
+   
+   .modale form > button:nth-last-of-type(2):hover {
+     background: #333;
+     transform: translateY(-1px);
+   }
+   
+   .modale form > button:last-of-type {
+     margin-top: 0.5rem;
+     background: transparent;
+     color: var(--text-secondary);
+     border: var(--border);
+   }
+   
+   .modale form > button:last-of-type:hover {
+     background: var(--bg-hover);
+     color: var(--text-primary);
    }
    
    /* ================================
@@ -691,370 +933,3 @@
      from { transform: translateY(-50%); }
      to   { transform: translate(100%, -50%); }
    }
-   
-   /* ================================
-      MODAL — définition unique
-      ================================ */
-   .modale {
-     z-index: 100;
-     position: fixed;
-     right: 0;
-     top: 50%;
-     transform: translateY(-50%);
-     background: #13152a;
-     border: var(--border-strong);
-     border-right: none;
-     animation: slide-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-     padding: 1.75rem 2rem 2rem;
-     border-radius: var(--radius-lg) 0 0 var(--radius-lg);
-     max-width: 420px;
-     width: 38vw;
-     box-shadow: -12px 0 48px rgba(0, 0, 0, 0.6);
-   }
-   
-   /* APRÈS .modale — sinon .modale écrase cette règle */
-   .modale-closing {
-     animation: slide-out 0.25s cubic-bezier(0.7, 0, 0.84, 0) forwards;
-   }
-   
-   /* ================================
-      MODAL — FORM
-      ================================ */
-   .modale form {
-     display: flex;
-     flex-direction: column;
-     gap: 0;
-   }
-   
-   .modale form h2 {
-     font-size: 0.95rem;
-     font-weight: 600;
-     color: var(--text-primary);
-     letter-spacing: 0.02em;
-     padding-bottom: 1rem;
-     margin-bottom: 1.25rem;
-     border-bottom: var(--border);
-   }
-   
-   .modale form > input {
-     width: 100%;
-     background: transparent;
-     border: none;
-     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-     padding: 0.6rem 0;
-     color: var(--text-primary);
-     font-size: 0.95rem;
-     outline: none;
-     transition: border-color var(--transition);
-     margin-top: 1.5rem;
-   }
-   
-   .modale form > input:first-of-type { margin-top: 0; }
-   
-   .modale form > input:focus { border-bottom-color: var(--accent); }
-   
-   .modale form > input[type="date"] {
-     color-scheme: dark;
-     cursor: pointer;
-   }
-   
-   .modale form > label {
-     font-size: 0.65rem;
-     font-weight: 600;
-     text-transform: uppercase;
-     letter-spacing: 0.1em;
-     color: var(--text-secondary);
-     margin-top: 0.3rem;
-     opacity: 0.7;
-   }
-   
-   .modale form > input:focus + label {
-     color: var(--accent);
-     opacity: 1;
-   }
-   
-   .modale form > label[for^="select"] {
-     margin-top: 1.5rem;
-     margin-bottom: 0.4rem;
-     opacity: 1;
-   }
-   
-   .modale form > select {
-     width: 100%;
-     background: rgba(255, 255, 255, 0.04);
-     border: var(--border);
-     border-radius: var(--radius-sm);
-     padding: 0.55rem 2rem 0.55rem 0.75rem;
-     color: var(--text-primary);
-     font-size: 0.875rem;
-     cursor: pointer;
-     outline: none;
-     appearance: none;
-     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b8fa8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-     background-repeat: no-repeat;
-     background-position: right 0.75rem center;
-     transition: border-color var(--transition), background var(--transition);
-   }
-   
-   .modale form > select:focus {
-     border-color: var(--accent);
-     background-color: rgba(108, 99, 255, 0.06);
-   }
-   
-   .modale form > select option {
-     background: #13152a;
-     color: var(--text-primary);
-   }
-   
-   /* Checklist */
-   .todo-checklist.form {
-     display: flex;
-     flex-direction: column;
-     gap: 0.5rem;
-     background: rgba(255, 255, 255, 0.02);
-     border: var(--border);
-     border-radius: var(--radius-md);
-     padding: 0.875rem;
-     margin-top: 1.5rem;
-   }
-   
-   .todo-checklist.form > p {
-     font-size: 0.65rem;
-     font-weight: 600;
-     text-transform: uppercase;
-     letter-spacing: 0.1em;
-     color: var(--text-secondary);
-   }
-   
-   .todo-checklist.form > ul {
-     list-style: none;
-     padding: 0;
-     display: flex;
-     flex-direction: column;
-     gap: 0.25rem;
-   }
-   
-   .todo-checklist.form > ul > div {
-     display: flex;
-     align-items: center;
-     background: rgba(255, 255, 255, 0.04);
-     border-radius: var(--radius-sm);
-     padding: 0.35rem 0.6rem;
-   }
-   
-   .checklist-item {
-     display: flex;
-     align-items: center;
-     justify-content: space-between;
-     width: 100%;
-     font-size: 0.85rem;
-     color: var(--text-primary);
-   }
-   
-   .checklist-item > button {
-     background: none;
-     border: none;
-     color: var(--text-secondary);
-     cursor: pointer;
-     padding: 0;
-     display: flex;
-     align-items: center;
-     transition: color var(--transition);
-   }
-   
-   .checklist-item > button:hover { color: var(--color-danger); }
-   
-   .todo-checklist.form > button {
-     align-self: flex-start;
-     background: var(--accent-light);
-     border: 1px solid rgba(108, 99, 255, 0.25);
-     border-radius: var(--radius-sm);
-     color: var(--accent);
-     padding: 0.3rem 0.7rem;
-     font-size: 0.78rem;
-     font-weight: 500;
-     cursor: pointer;
-     transition: all var(--transition);
-   }
-   
-   .todo-checklist.form > button:hover { background: rgba(108, 99, 255, 0.25); }
-   
-   .todo-checklist.form > input {
-     background: transparent;
-     border: none;
-     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-     padding: 0.4rem 0;
-     color: var(--text-primary);
-     font-size: 0.85rem;
-     outline: none;
-     width: 100%;
-     transition: border-color var(--transition);
-   }
-   
-   .todo-checklist.form > input:focus { border-bottom-color: var(--accent); }
-   
-   /* Boutons OK / Cancel */
-   .modale form > button {
-     padding: 0.65rem 1.25rem;
-     border-radius: var(--radius-md);
-     font-size: 0.875rem;
-     font-weight: 500;
-     cursor: pointer;
-     transition: all var(--transition);
-     border: none;
-     width: 100%;
-   }
-   
-   .modale form > button:nth-last-of-type(2) {
-     margin-top: 2rem;
-     background: var(--accent);
-     color: #fff;
-     box-shadow: var(--accent-glow);
-   }
-   
-   .modale form > button:nth-last-of-type(2):hover {
-     filter: brightness(1.12);
-     transform: translateY(-1px);
-   }
-   
-   .modale form > button:last-of-type {
-     margin-top: 0.5rem;
-     background: transparent;
-     color: var(--text-secondary);
-     border: var(--border);
-   }
-   
-   .modale form > button:last-of-type:hover {
-     background: var(--bg-glass-hover);
-     color: var(--text-primary);
-   }
-
-
-/* Fond noir pour faire ressortir l'effet */
-
-  
-  #container {
-    position: relative;
-  }
-  
-  
-  /* Style de chaque mot */
-  .word {
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 2rem;
-    font-family: 'Inter', sans-serif;   /* même police que le h1 */
-    font-weight: 700;                    /* même graisse */
-    letter-spacing: 0.15em;             /* même espacement */
-    text-transform: uppercase;
-    white-space: nowrap;
-    animation: 
-      spin 9s linear infinite alternate, 
-      fade-in 8s ease-in-out infinite alternate;
-  }
-  
-  /* Animation de rotation à 360 degrés */
-  @keyframes spin {
-    0%   { transform: rotate(-10deg);}
-    100% { transform: rotate(10deg);}
-  }
-  
-  /* Animation optionnelle pour faire apparaître les mots en fondu */
-  @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 0.5; }
-  }
-
-  .nav-header > div {
-    position: relative;
-    width: fit-content;   /* le div colle au texte */
-  }
-  
-  
-  .project-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1.25rem;
-    overflow-y: auto;
-    flex: 1;
-  }
-
-
-  /* ================================
-   TODO MAIN — contenu expanded
-   ================================ */
-.todo-main {
-    grid-area: 2 / 1 / 3 / 3;
-    display: none;
-    padding-top: 0.75rem;
-    border-top: var(--border);
-    display: none;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-  }
-  
-  .todo-expand {
-    display: grid;  /* remplace display: block */
-  }
-  
-  /* chaque champ */
-  .description, .note {
-    grid-column: 1 / -1;   /* pleine largeur */
-  }
-  
-  .dueDate, .priority, .checklist {
-    grid-column: span 1;
-  }
-  
-  /* label */
-  .todo-key {
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.25rem;
-  }
-  
-  /* valeur texte */
-  .todo-value {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
-  }
-  
-  /* select priority */
-  .priority select {
-    margin-left: 0.5rem;
-    background: var(--bg-glass);
-    border: var(--border);
-    border-radius: var(--radius-sm);
-    color: var(--text-primary);
-    padding: 0.2rem 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-  }
-  
-  /* checklist */
-  .checklist ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-  
-  .checklist-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.825rem;
-    color: var(--text-secondary);
-  }
-
-
-  

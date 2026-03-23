@@ -95,15 +95,13 @@ export function renderDashboard(store) {
             const title = document.createElement('h4')
             title.textContent = todo.title
     
-            const priority = document.createElement('p')
-            priority.textContent = todo.priority
-            
+
             const date = document.createElement('h4')
             if (todo.dueDate) {
                 date.textContent = format(parseISO(todo.dueDate), "E d MMMM yyyy")
             }
      
-            todoDiv.append(title,priority, date)
+            todoDiv.append(title, date)
             priorityBlock.append(todoDiv)
         }
     }
@@ -136,7 +134,7 @@ export function renderDashboard(store) {
              const date = document.createElement('p')
              date.classList.add('upcoming-date-todo')
              if (todo.dueDate) {
-                 date.textContent = format(parseISO(todo.dueDate), "EEE dd ")
+                 date.textContent = format(parseISO(todo.dueDate), "EEE dd MMMM yyyy ")
              }
       
              todoDiv.prepend(title,date)
