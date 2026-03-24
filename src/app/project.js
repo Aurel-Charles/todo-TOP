@@ -2,7 +2,7 @@ export function createProject(name, id = crypto.randomUUID()) {
     const project = {
         name,
         id,
-        list: []
+        list: [],
     }
 
     const addTodo = function (todo) {
@@ -22,5 +22,11 @@ export function createProject(name, id = crypto.randomUUID()) {
         return project.id
     }
 
-    return {name, addTodo, getList, removeTodo, getId}
+    // return {name, addTodo, getList, removeTodo, getId,}
+    return {
+        get name() { return project.name },
+        set name(value) { project.name = value },
+        addTodo, getList, removeTodo, getId,
+        edit: project.edit
+    }
 }

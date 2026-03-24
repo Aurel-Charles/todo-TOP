@@ -48,6 +48,7 @@
      --color-high:     #ef4444;
      --color-high-bg:  #fff5f5;
      --color-danger:   #ef4444;
+     --color-info:   #656af9;
      --color-danger-bg:#fff5f5;
      --color-success:  #22c55e;
      --color-upcoming: #3b82f6;
@@ -201,7 +202,7 @@
    
    .nav-project-div {
      display: grid;
-     grid-template-columns: 1fr auto;
+     grid-template-columns: 1fr auto auto;
      align-items: center;
      padding: 0.4rem 0.6rem;
      border-radius: var(--radius-sm);
@@ -230,11 +231,33 @@
    
    .nav-project-div:hover > button { opacity: 1; }
    
-   .nav-project-div > button:hover {
-     color: var(--color-danger);
+   .nav-project-div > button:hover.btn-edit {
+    color: var(--color-info);
+    rotate: 10deg;
+}
+.nav-project-div > button:hover.btn-remove {
+    color: var(--color-danger);
      animation: rotate-180 0.5s ease-in-out both;
    }
    
+   .modale-edit-project{
+    align-self: center;
+    grid-column: span 3;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: var(--bg);
+    border: var(--border-strong);
+    border-radius: var(--radius-md);
+    margin: 0.5rem;
+   }
+
+   .modale-edit-project > label,
+   .modale-edit-project > input { grid-column: 1 / 3; }
+   .modale-edit-project > label { place-self: center; }
+
    .nav-library-footer { padding: 0.5rem 0.75rem; }
    
    .nav-library-footer > .btn-add {
@@ -465,6 +488,10 @@
      padding: 0.6rem 0.75rem;
      transition: background var(--transition);
    }
+
+   .happening-this-week-body > div > div > h4,p.description-date-todo { 
+    text-align: end;
+   }
    
    .happening-this-week-body > div > div:hover { background: #dbeafe; }
    
@@ -513,22 +540,37 @@
    .all-project-body h4 { font-size: 0.875rem; font-weight: 500; }
    .all-project-body p  { font-size: 0.72rem; color: var(--text-secondary); }
    
-   /* OVERDUES */
+   /* ovverdues */
    .overdues-todo\'s-body > div {
-     background: var(--color-danger-bg);
-     border: 1px solid #fca5a5;
-     border-left: 3px solid var(--color-danger);
-     border-radius: var(--radius-sm);
-     padding: 0.6rem 0.75rem;
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     gap: 0.5rem;
-     transition: background var(--transition);
-   }
-   
-   .overdues-todo\'s-body > div:hover { background: #fee2e2; }
-   .overdues-todo\'s-body h4 { font-size: 0.875rem; font-weight: 500; }
+    background: var(--color-danger-bg);
+    border: 1px solid #fca5a5;
+    border-left: 3px solid var(--color-danger);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    transition: background var(--transition);
+  }
+  
+  .overdues-todo\'s-body > div:hover { background: #fee2e2; }
+  
+  .overdues-todo\'s-body h4:first-child {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .overdues-todo\'s-body h4:last-child {
+    font-size: 0.72rem;
+    color: var(--color-danger);
+    font-weight: 400;
+  }
+  
+  .overdues-todo\'s-body > div > p {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    text-decoration: underline;
+  }
    
    /* Messages vides */
    .high-priority-body > p,
@@ -686,8 +728,9 @@
         grid-template-columns: repeat(2, 1fr);
      }
    
-   .description, .note { grid-column: 1 / -1; }
-   .dueDate, .priority, .checklist { grid-column: span 1; }
+    .description {grid-column: span 2;}
+   /* .description, .note { grid-column: 1 / -1; }
+   .dueDate, .priority, .checklist { grid-column: span 1; } */
    
    .todo-key {
      font-size: 0.65rem;
