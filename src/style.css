@@ -717,9 +717,13 @@
    }
    
    .checklist ul {
-     list-style: none; padding: 0;
-     display: flex; flex-direction: column; gap: 0.35rem;
+     list-style: none; 
+     padding: 0;
+     display: flex; 
+     flex-direction: column;
+    gap: 0.35rem;
    }
+
    
    .checklist-item {
      display: flex; align-items: center;
@@ -727,7 +731,7 @@
      font-size: 0.825rem;
      color: var(--text-secondary);
    }
-   
+
    .item-checked { text-decoration: line-through; opacity: 0.45; }
    
    .todo-footer {
@@ -846,7 +850,8 @@
    
    .checklist-item {
      display: flex; align-items: center;
-     justify-content: space-between;
+     justify-content: flex-start;
+     margin-left: 2rem;
      width: 100%;
      font-size: 0.85rem; color: var(--text-primary);
    }
